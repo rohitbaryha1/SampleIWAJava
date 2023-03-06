@@ -21,7 +21,7 @@ on:
 jobs:
   FoD-SAST-Scan:
     # Use the appropriate runner for building your source code.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     permissions:
       actions: read
       contents: read
@@ -41,7 +41,7 @@ jobs:
 
       # Prepare source+dependencies for upload.  ScanCentral Client documentation is located at https://www.microfocus.com/documentation/fortify-software-security-center/
       - name: Download Fortify ScanCentral Client
-        uses: fortify/gha-setup-scancentral-client@v2
+        uses: fortify/gha-setup-scancentral-client@v2.2.2
         with:
           version: 22.1.0
       - name: Package Code + Dependencies
