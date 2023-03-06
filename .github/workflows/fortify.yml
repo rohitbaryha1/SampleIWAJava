@@ -26,7 +26,10 @@ jobs:
       actions: read
       contents: read
       security-events: write
-
+      
+    strategy:
+      matrix:
+        maven: [ '3.8.7' ]
     steps:
       # Check out source code
       - name: Check Out Source Code
@@ -41,8 +44,10 @@ jobs:
 
       # Prepare source+dependencies for upload.  ScanCentral Client documentation is located at https://www.microfocus.com/documentation/fortify-software-security-center/
       - name: Download Fortify ScanCentral Client
-        uses: fortify/gha-setup-scancentral-client@v2.2.2
+        uses: fortify/gha-setup-scancentral-client@v2
         with:
           version: 22.1.0
       - name: Package Code + Dependencies
-        run: scancentral package -bt mvn -oss -o package.zip
+        run: |
+        mvn --version
+        scancentral package -bt mvn -oss -o package.zip
