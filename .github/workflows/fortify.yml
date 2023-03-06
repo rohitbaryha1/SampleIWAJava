@@ -47,6 +47,7 @@ jobs:
         uses: fortify/gha-setup-scancentral-client@v2
         with:
           version: 22.1.0
+          maven-version: 3.8.7
       - name: Package Code + Dependencies
         run: |
           mvn --version
