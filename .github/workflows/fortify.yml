@@ -47,4 +47,4 @@ jobs:
       - name: Package Code + Dependencies
         run: scancentral package $PACKAGE_OPTS -o package.zip
         env:
-          PACKAGE_OPTS: "-bt mvn -oss"
+          PACKAGE_OPTS: "-bt mvn -X"
