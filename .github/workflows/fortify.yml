@@ -49,5 +49,5 @@ jobs:
           version: 22.1.0
       - name: Package Code + Dependencies
         run: |
-        mvn --version
-        scancentral package -bt mvn -oss -o package.zip
+          mvn --version
+          scancentral package -bt mvn -oss -o package.zip
