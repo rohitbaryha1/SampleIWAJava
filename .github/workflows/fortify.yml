@@ -43,8 +43,6 @@ jobs:
       - name: Download Fortify ScanCentral Client
         uses: fortify/gha-setup-scancentral-client@v2
         with:
-          version: 22.2.0
+          version: 22.1.0
       - name: Package Code + Dependencies
-        run: mvn clean package
-        env:
-          PACKAGE_OPTS: "-bt mvn -oss"
+        run: scancentral package -bt mvn -oss -o package.zip
