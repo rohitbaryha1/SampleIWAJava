@@ -45,6 +45,6 @@ jobs:
         with:
           version: 22.2.0
       - name: Package Code + Dependencies
-        run: scancentral package $PACKAGE_OPTS -o package.zip
+        run: mvn clean package
         env:
-          PACKAGE_OPTS: "-bt mvn -X"
+          PACKAGE_OPTS: "-bt mvn -oss"
