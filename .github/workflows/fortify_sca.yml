@@ -40,20 +40,18 @@ jobs:
           echo 'Setting domain IP'
           sudo echo "44.192.84.88 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
           echo 'downloading SCA installer'
-          pwd
-          ls -l
+
           wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
           wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/fortify.license"
-          ls -l
           chmod +x "Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
           
           install_dir="/opt/Fortify/Fortify_SCA_and_Apps_22.2.1"
           ./Fortify_SCA_and_Apps_22.2.1_linux_x64.run --fortify_license_path ./fortify.license --mode unattended
-          pwd
+
           # find / -name fortifyupdate*
-          ls -l
+
           export PATH=$PATH:/home/runner/Fortify/Fortify_SCA_and_Apps_22.2.1/bin
-          fortifyupdate
+          #fortifyupdate
 
           sourceanalyzer -b iwa-java-cli -clean
           sourceanalyzer -b iwa-java-cli -source 11 "./src/**/*.java" 
