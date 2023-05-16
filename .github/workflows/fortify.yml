@@ -11,7 +11,7 @@
 # assistance with configuration, feel free to create a help ticket in the Fortify on Demand portal.                                            #
 ################################################################################################################################################
 
-name: Fortify on Demand Scan
+name: Fortify ScanCentral Scan
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  FoD-SAST-Scan:
+  Fortify-SC-Scan:
     # Use the appropriate runner for building your source code.
     runs-on: ubuntu-20.04
     permissions:
@@ -49,7 +49,16 @@ jobs:
         uses: fortify/gha-setup-scancentral-client@v2
         with:
           version: 22.1.0
+          client-auth-token: "CHANGEME321!"
       - name: Package Code + Dependencies
         run: |
           mvn --version
+          sudo echo "44.192.84.88 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
           scancentral package -bt mvn -oss -o package.zip
+          scancentral -url ${SC_CONTROLLER_URL} start $BUILD_OPTS -upload -application $APPLICATION -version $VERSION -uptoken $SSC_UPLOAD_TOKEN
+        env:
+          SC_CONTROLLER_URL: https://fortify.cyberxdemo.com:10443/scancentral-ctrl
+          SSC_UPLOAD_TOKEN: MDhiZTRjZDItMmQyYS00MmJhLTk5YzEtOGQ2NGUzMzA5YTM3
+          APPLICATION: "ACN_SampleApp"
+          VERSION: "2.0"
+          BUILD_OPTS: "-bt mvn"
