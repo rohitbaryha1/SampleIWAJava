@@ -14,9 +14,7 @@
 name: Fortify ScanCentral Scan
 
 on:
-  workflow_dispatch:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch
 
 jobs:
   Fortify-SC-Scan:
