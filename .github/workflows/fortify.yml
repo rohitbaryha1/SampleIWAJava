@@ -58,7 +58,7 @@ jobs:
           scancentral -url ${SC_CONTROLLER_URL} start $BUILD_OPTS -upload -application $APPLICATION -version $VERSION -uptoken $SSC_UPLOAD_TOKEN
         env:
           SC_CONTROLLER_URL: https://fortify.cyberxdemo.com:10443/scancentral-ctrl
-          SSC_UPLOAD_TOKEN: MDhiZTRjZDItMmQyYS00MmJhLTk5YzEtOGQ2NGUzMzA5YTM3
+          SSC_UPLOAD_TOKEN: 08be4cd2-2d2a-42ba-99c1-8d64e3309a37
           APPLICATION: "ACN_SampleApp"
           VERSION: "2.0"
           BUILD_OPTS: "-bt mvn"
