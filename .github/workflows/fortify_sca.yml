@@ -1,0 +1,70 @@
+name: Fortify SCA Scan
+
+on:
+  push
+
+jobs:
+  Fortify-SCA-Scan:
+    # Use the appropriate runner for building your source code.
+    runs-on: ubuntu-20.04
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      
+    steps:
+      # Check out source code
+      - name: Check Out Source Code
+        uses: actions/checkout@v3
+
+      # Java is required to run the various Fortify utilities. When scanning a Java application, please use the appropriate Java version for building your application.
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'temurin'
+      # Setup Maven 3.8
+      - name: Setup Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.2
+          
+      # Prepare source+dependencies for upload.  ScanCentral Client documentation is located at https://www.microfocus.com/documentation/fortify-software-security-center/
+      - name: Download Fortify ScanCentral Client
+        uses: fortify/gha-setup-scancentral-client@v2
+        with:
+          version: 22.1.0
+          client-auth-token: "CHANGEME321!"
+      - name: Download and Scan
+        run: |
+          echo 'Setting domain IP'
+          sudo echo "44.192.84.88 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
+          echo 'downloading SCA installer'
+          pwd
+          ls -l
+          wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
+          wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/fortify.license"
+          ls -l
+          chmod +x "Fortify_SCA_and_Apps_21.2.2_linux_x64.run"
+          
+          install_dir="/opt/Fortify/Fortify_SCA_and_Apps_22.2.1"
+          ./Fortify_SCA_and_Apps_22.2.1_linux_x64.run --fortify_license_path ./fortify.license --mode unattended
+          pwd
+          # find / -name fortifyupdate*
+          ls -l
+          export PATH=$PATH:/home/runner/Fortify/Fortify_SCA_and_Apps_22.2.1/bin
+          fortifyupdate
+
+          sourceanalyzer -b iwa-java-cli -clean
+          sourceanalyzer -b iwa-java-cli -source 11 "./src/**/*.java" 
+          sourceanalyzer -b iwa-java-cli "./src/**/*.xml" "**/*.yml" "./src/**/*.properties" "Dockerfile*"
+          sourceanalyzer -b iwa-java-cli -sql-language PL/SQL "./src/**/*.sql"
+          sourceanalyzer -b iwa-java-cli -scan -f iwa-java-cli.fpr
+          sourceanalyzer -b iwa-java-cli -scan -f github-sast-report.fpr
+          fortifyclient -url https://fortify.cyberxdemo.com:8443/ssc -authtoken 08be4cd2-2d2a-42ba-99c1-8d64e3309a37 -application "ACN_SampleApp" -applicationVersion "2.0" uploadFPR -file github-sast-report.fpr
+        env:
+          SC_CONTROLLER_URL: https://fortify.cyberxdemo.com:10443/scancentral-ctrl
+          SSC_UPLOAD_TOKEN: 08be4cd2-2d2a-42ba-99c1-8d64e3309a37
+          APPLICATION: "ACN_SampleApp"
+          VERSION: "2.0"
+          BUILD_OPTS: "-bt mvn"
