@@ -41,7 +41,7 @@ jobs:
           sudo echo "44.192.84.88 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
           echo 'downloading SCA installer'
 
-          wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
+          wget -nv "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
           wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/fortify.license"
           chmod +x "Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
           
@@ -51,7 +51,8 @@ jobs:
           # find / -name fortifyupdate*
 
           export PATH=$PATH:/home/runner/Fortify/Fortify_SCA_and_Apps_22.2.1/bin
-          #fortifyupdate
+          
+          fortifyupdate
 
           sourceanalyzer -b iwa-java-cli -clean
           sourceanalyzer -b iwa-java-cli -source 11 "./src/**/*.java" 
