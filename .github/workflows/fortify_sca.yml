@@ -38,7 +38,7 @@ jobs:
       - name: Download and Scan
         run: |
           echo 'Setting domain IP'
-          sudo echo "44.192.84.88 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
+          sudo echo "34.204.183.117 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
           echo 'downloading SCA installer'
 
           wget -nv "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.2.1_linux_x64.run"
