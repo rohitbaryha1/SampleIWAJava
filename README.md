@@ -1,4 +1,4 @@
-# IWA (Insecure Web App) Java Edition, x86
+# IWA (Insecure Web App) Java Edition
 
 ## Overview
 
